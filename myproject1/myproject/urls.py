@@ -25,6 +25,7 @@ from calculations.views import substraction
 from calculations.views import multiplication
 from calculations.views import division
 from calculations.views import fdivision
+from basic.views import health
 
 
 urlpatterns = [
@@ -37,6 +38,7 @@ urlpatterns = [
     path("sub",substraction),
     path("mul",multiplication),
     path("div",division),
-    path("fdiv",fdivision)
+    path("fdiv",fdivision),
+    path("hel",health)
 ]
 

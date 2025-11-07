@@ -93,6 +93,22 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': "django",
+        "USER":'root',
+         'HOST':"127.0.0.1",
+         'PASSWORD':'Nani@123',
+         "PORT":"3306",
+         "OPTIONS":{
+            'charset':'utf8mb4',
+            'init_command':"SET Sql_mode='STRICT_TRANS_TABLES'"
+            }
+    }
+}
+
+
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
 
