@@ -26,6 +26,7 @@ from calculations.views import multiplication
 from calculations.views import division
 from calculations.views import fdivision
 from basic.views import health
+from basic.views import addStudent
 
 
 urlpatterns = [
@@ -39,6 +40,7 @@ urlpatterns = [
     path("mul",multiplication),
     path("div",division),
     path("fdiv",fdivision),
-    path("hel",health)
+    path("hel",health),
+    path("addStudent",addStudent)
 ]
 

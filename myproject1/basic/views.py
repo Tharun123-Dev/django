@@ -2,6 +2,9 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.http import JsonResponse
 from django.db import connection
+from django.views.decorators.csrf import csrf_exempt
+from .models import Student
+import json
 
 
 # Create your views here.
@@ -26,4 +29,21 @@ def health(request):
         return JsonResponse({"status":"ok","db":"connected"})
     except Exception as e:
         return JsonResponse({"status":"error","db":str(e)})  
+
+
+# Add student view
+@csrf_exempt
+def addStudent(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            student = Student.objects.create(
+                name=data.get('name'),
+                age=data.get('age'),
+                email=data.get('email')
+            )
+            return JsonResponse({"status": "success", 'id': student.id}, status=200)
+        except Exception as e:
+            return JsonResponse({"status": "error", "message": str(e)}, status=400)
+    return JsonResponse({"error": "use POST method"}, status=400)
     
