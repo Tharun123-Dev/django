@@ -41,6 +41,6 @@ urlpatterns = [
     path("div",division),
     path("fdiv",fdivision),
     path("hel",health),
-    path("addStudent",addStudent)
+    path("Student",addStudent)
 ]
 
