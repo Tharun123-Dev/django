@@ -31,7 +31,7 @@ def health(request):
         return JsonResponse({"status":"error","db":str(e)})  
 
 
-# Add student view
+# Add student view // creating using
 @csrf_exempt
 def addStudent(request):
     if request.method == 'POST':
@@ -43,7 +43,17 @@ def addStudent(request):
                 email=data.get('email')
             )
             return JsonResponse({"status": "success", 'id': student.id}, status=200)
+        
         except Exception as e:
             return JsonResponse({"status": "error", "message": str(e)}, status=400)
+    #crud operations
+    elif request.method=="GET":
+        return JsonResponse({"req0":"get method requested"},status=200)
+    elif request.method=="PUT":
+         return JsonResponse({"req0":"put method requested"},status=200)
+    elif request.method=="DELETE":
+         return JsonResponse({"req0":"delete method requested"},status=200)
     return JsonResponse({"error": "use POST method"}, status=400)
+
+
     
