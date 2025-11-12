@@ -24,13 +24,23 @@ def dynamicResponse(request):
     name=request.GET.get("name",'tharun')
     city=request.GET.get("city",'hyd')
     return HttpResponse(f"hello {name} from {city}")
+# def health(request):
+#     try:
+#         with connection.cursor() as c:
+#             c.execute("SELECT 1")
+#         return JsonResponse({"status":"ok","db":"connected"})
+#     except Exception as e:
+#         return JsonResponse({"status":"error","db":str(e)})  
+
 def health(request):
     try:
         with connection.cursor() as c:
             c.execute("SELECT 1")
-        return JsonResponse({"status":"ok","db":"connected"})
+        print(" Database connected successfully")  # <-- prints in terminal
+        return JsonResponse({"status": "ok", "db": "connected"})
     except Exception as e:
-        return JsonResponse({"status":"error","db":str(e)})  
+        print(f" Database connection error: {e}")  # <-- prints in terminal
+        return JsonResponse({"status": "error", "db": str(e)})
 
 
 # Add student view // creating using
