@@ -55,30 +55,30 @@ class BasicMiddleware:
                 dob = data.get("dob")
                 password = data.get("pswd")
 
-                # ✅ Username rule: only letters and numbers, 3–15 chars
+                #  Username rule: only letters and numbers, 3–15 chars
                 if not re.match(r'^[A-Za-z0-9]{3,15}$', username):
-                    print("❌ Invalid Username")
+                    print(" Invalid Username")
                     return JsonResponse({"error": "Invalid username format"})
 
-                # ✅ Email rule: must follow basic email format
+                #  Email rule: must follow basic email format
                 if not re.match(r'^[\w\.-]+@[\w\.-]+\.\w+$', email):
-                    print("❌ Invalid Email")
+                    print(" Invalid Email")
                     return JsonResponse({"error": "Invalid email format"})
 
-                # ✅ DOB rule: YYYY-MM-DD format
+                #  DOB rule: YYYY-MM-DD format
                 if not re.match(r'^\d{4}-\d{2}-\d{2}$', dob):
-                    print("❌ Invalid DOB")
+                    print("Invalid DOB")
                     return JsonResponse({"error": "Invalid date of birth format (YYYY-MM-DD)"})
 
-                # ✅ Password rule: at least 8 chars, 1 uppercase, 1 number, 1 special char
+                # Password rule: at least 8 chars, 1 uppercase, 1 number, 1 special char
                 if not re.match(r'^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$', password):
-                    print("❌ Weak Password")
+                    print(" Weak Password")
                     return JsonResponse({"error": "Password must be at least 8 chars with uppercase, number, and special char"})
 
-                print("✅ All fields are valid!")
+                print(" All fields are valid!")
 
             except json.JSONDecodeError:
-                print("❌ Invalid JSON data")
+                print("Invalid JSON data")
                 return JsonResponse({"error": "Invalid JSON data"})
 
         # Continue the request if all checks passed
