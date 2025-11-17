@@ -27,7 +27,7 @@ from calculations.views import division
 from calculations.views import fdivision
 from basic.views import health
 from basic.views import addStudent
-from basic.views import student_api
+from basic.views import student_api,job1,job2
 
 
 urlpatterns = [
@@ -43,6 +43,8 @@ urlpatterns = [
     path("fdiv",fdivision),
     path("hel",health),
     path("Student",addStudent),
-    path("getbyid",student_api)
+    path("getbyid",student_api),
+    path('job1/',job1),
+    path('job2',job2)
 ]
 

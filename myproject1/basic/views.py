@@ -297,4 +297,9 @@ def student_api(request):
     #         return JsonResponse({"status": "error", "message": str(e)}, status=400)
 
 
+def job1(request):
+    return JsonResponse({"message":"u have successfully applied for job1"})
+def job2(request):
+    return JsonResponse({"message":"u have successfully applied for job2"})
+
 
