@@ -4,6 +4,7 @@ from django.http import JsonResponse
 from django.db import connection
 from django.views.decorators.csrf import csrf_exempt
 from .models import Student
+from basic.models import Users
 from django.forms.models import model_to_dict
 import json
 import traceback
@@ -231,6 +232,7 @@ def student_api(request):
     if request.method == 'POST':
         try:
             data = json.loads(request.body)
+            #creating data into the table
             student = Student.objects.create(
                 name=data.get('name'),
                 age=data.get('age'),
@@ -301,5 +303,33 @@ def job1(request):
     return JsonResponse({"message":"u have successfully applied for job1"})
 def job2(request):
     return JsonResponse({"message":"u have successfully applied for job2"})
+
+
+
+
+#creating account view and implementing some rules for follow
+#username---user name mandatory
+# should be unique,
+#  must 3-2- chars,
+#  cannot starts with or end swith .,_,
+# cannot have .. 0r__ and 
+# no spaces ,  so follow middlewares
+@csrf_exempt
+def signUp(request):
+    if request.method=="POST":#getting data
+        data = json.loads(request.body) #send the data for loading data
+        print(data)
+        #insrt data into the table
+        #users is the model name and import from models and set the data using by postman
+        user = Users.objects.create(
+                username=data.get('username'),
+                email=data.get('email'),
+                password=data.get('password')
+            )
+
+    return JsonResponse({"status":"success"},status=200) #so its printing in terminals and set the data
+
+
+
 
 
