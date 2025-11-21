@@ -8,7 +8,14 @@ class Student(models.Model):
 
 
 #creating for account mode
-class Users(models.Model):
+class Users(models.Model): #aquiring the properties meaning
     username=models.CharField(max_length=100,unique=True)
     email=models.EmailField(unique=True)
     password=models.CharField(max_length=100)
+
+
+#creating for account mode
+class Movie(models.Model): #aquiring the properties meaning
+    movie_name=models.CharField(max_length=100,unique=True)
+    date=models.CharField(max_length=100)
+    rating=models.IntegerField()

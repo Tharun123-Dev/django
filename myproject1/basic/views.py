@@ -5,9 +5,11 @@ from django.db import connection
 from django.views.decorators.csrf import csrf_exempt
 from .models import Student
 from basic.models import Users
+
 from django.forms.models import model_to_dict
 import json
 import traceback
+from basic.models import Movie
 
 
 # Create your views here.
@@ -49,7 +51,7 @@ def health(request):
 def addStudent(request):
     if request.method == 'POST':
         try:
-            data = json.loads(request.body)
+            data = json.loads(request.body)  #load and send the data through json format only
             student = Student.objects.create(
                 name=data.get('name'),
                 age=data.get('age'),
@@ -328,6 +330,49 @@ def signUp(request):
             )
 
     return JsonResponse({"status":"success"},status=200) #so its printing in terminals and set the data
+
+
+# #movie purpose
+# @csrf_exempt
+# def movie(request):
+#     if request.method=="POST":#getting data
+#         data = json.loads(request.body) #send the data for loading data
+#         # print(data)
+#         #insrt data into the table
+#         #users is the model name and import from models and set the data using by postman
+#         user = Movie.objects.create(
+#                 movie_name=data.get('movie_name'),
+#                 date=data.get('date'),
+#                 rating=data.get('rating')
+#             )
+
+#     return JsonResponse({"status":"success"},status=200 ) #so its printing in terminals and set the data
+@csrf_exempt
+def movie(request):
+    if request.method == "POST":
+        data = json.loads(request.body)
+        rating_number = int(data.get("rating"))
+        ratingg = "*" * rating_number
+        data["rating"] = ratingg
+
+        print("POST Data:", data)       
+
+        user = Movie.objects.create(
+            movie_name=data.get('movie_name'),
+            date=data.get('date'),
+            rating=rating_number     
+        )
+
+        return JsonResponse({
+            "status": "success",
+            "rating": ratingg          
+        }, status=200)
+
+    return JsonResponse({"error": "Invalid request method"}, status=400)
+
+
+
+
 
 
 
