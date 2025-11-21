@@ -49,3 +49,7 @@
 # To save the list of installed packages:
 
 # pip freeze > requirements.txt
+
+
+#virtual environment
+#--we create different workspaces for each project in same laptop
