@@ -10,6 +10,8 @@ from django.forms.models import model_to_dict
 import json
 import traceback
 from basic.models import Movie
+from basic.models import Movie_review
+
 
 
 # Create your views here.
@@ -369,6 +371,74 @@ def movie(request):
         }, status=200)
 
     return JsonResponse({"error": "Invalid request method"}, status=400)
+
+
+
+#all crud methods for movie_review
+@csrf_exempt
+def movies_review(request):
+    if request.method=="POST":#getting data
+        data = json.loads(request.body) #send the data for loading data
+        
+        #insrt data into the table
+        #users is the model name and import from models and set the data using by postman
+        user = Movie_review.objects.create(
+                movie_name=data.get('movie_name'),
+                date=data.get('date'),
+                rating=data.get('rating'),
+                budget=data.get('budget')
+            )
+        print({"movie_name": user.movie_name,"release_date":user.date,"rating":user.rating,"movie_budget":user.budget})
+        return JsonResponse(
+        {"status": "success", "data": data},
+        status=200,
+        safe=False
+    )
+    if request.method == "GET":
+        result=tuple(Movie_review.objects.values())
+        print(result)
+        return JsonResponse(
+        {"status": "success", "data": result},
+        status=200,
+        safe=False
+    )
+    elif request.method=="DELETE":
+           data=json.loads(request.body) #getting objects
+           ref_id=data.get("id")#getting id
+           to_be_delete=Movie_review.objects.get(id=ref_id)
+         
+
+           #shown in terminal before deleting
+           get_del_data=Movie_review.objects.filter(id=ref_id).values().first()
+
+           to_be_delete.delete() 
+           return JsonResponse(
+           {"status": "success", "data": get_del_data},
+           status=200,
+           safe=False
+    )  
+
+    elif request.method=="PUT":
+         data=json.loads(request.body)
+         ref_id=data.get("id")#getting email
+         date=data.get("date")#getting email
+         exsiting_movie=Movie_review.objects.get(id=ref_id)#fetched the object as per the id
+        #  print(exsiting_student)
+         exsiting_movie.date=date#updating the new email
+         exsiting_movie.save()#commit changes
+
+        #getting updating value
+         updated_data=Movie_review.objects.filter(id=ref_id).values().first()
+        #  print(updated_data)
+         return JsonResponse(
+        {"status": "success", "data": updated_data},
+        status=200,
+        safe=False
+         )
+
+    return JsonResponse({"status":"success",},status=200)
+
+
 
 
 

@@ -19,3 +19,10 @@ class Movie(models.Model): #aquiring the properties meaning
     movie_name=models.CharField(max_length=100,unique=True)
     date=models.CharField(max_length=100)
     rating=models.IntegerField()
+
+#creating for account mode
+class Movie_review(models.Model): #aquiring the properties meaning
+    movie_name=models.CharField(max_length=100,unique=True)
+    date=models.CharField(max_length=100)
+    rating=models.IntegerField()
+    budget=models.CharField(max_length=100)
