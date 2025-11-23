@@ -440,6 +440,115 @@ def movies_review(request):
 
 
 
+# from django.http import JsonResponse
+# from django.views.decorators.csrf import csrf_exempt
+# from .models import Movie_review
+# import json
+
+# @csrf_exempt
+# def movies_review(request):
+
+#     # ------------------- CREATE (POST) -------------------
+#     if request.method == "POST":
+#         data = json.loads(request.body)
+
+#         # Conditions
+#         if not data.get("movie_name"):
+#             return JsonResponse({"error": "Movie name is required"}, status=400)
+
+#         if Movie_review.objects.filter(movie_name=data["movie_name"]).exists():
+#             return JsonResponse({"error": "Movie already exists"}, status=400)
+
+#         if data.get("rating", 0) > 5 or data.get("rating", 0) < 1:
+#             return JsonResponse({"error": "Rating must be between 1 and 5"}, status=400)
+
+#         if data.get("budget", 0) <= 0:
+#             return JsonResponse({"error": "Budget must be positive"}, status=400)
+
+#         movie = Movie_review.objects.create(
+#             movie_name=data["movie_name"],
+#             date=data.get("date"),
+#             rating=data.get("rating"),
+#             budget=data.get("budget")
+#         )
+
+#         return JsonResponse({"message": "Movie created", "id": movie.id}, status=201)
+
+#     # ------------------- READ (GET) -------------------
+#     if request.method == "GET":
+#         movies = list(Movie_review.objects.values())
+#         return JsonResponse({"data": movies}, status=200)
+
+#     # For PUT, PATCH, DELETE → load body
+#     try:
+#         data = json.loads(request.body)
+#     except:
+#         data = {}
+
+#     # ------------------- DELETE -------------------
+#     if request.method == "DELETE":
+#         movie_id = data.get("id")
+
+#         if not movie_id:
+#             return JsonResponse({"error": "ID is required"}, status=400)
+
+#         try:
+#             movie = Movie_review.objects.get(id=movie_id)
+#         except Movie_review.DoesNotExist:
+#             return JsonResponse({"error": "Movie not found"}, status=404)
+
+#         movie.delete()
+#         return JsonResponse({"message": "Movie deleted"}, status=200)
+
+#     # ------------------- FULL UPDATE (PUT) -------------------
+#     if request.method == "PUT":
+#         movie_id = data.get("id")
+
+#         try:
+#             movie = Movie_review.objects.get(id=movie_id)
+#         except Movie_review.DoesNotExist:
+#             return JsonResponse({"error": "Movie not found"}, status=404)
+
+#         movie.movie_name = data.get("movie_name", movie.movie_name)
+#         movie.date = data.get("date", movie.date)
+#         movie.rating = data.get("rating", movie.rating)
+#         movie.budget = data.get("budget", movie.budget)
+#         movie.save()
+
+#         return JsonResponse({"message": "Movie updated"}, status=200)
+
+#     # ------------------- PARTIAL UPDATE (PATCH) -------------------
+#     if request.method == "PATCH":
+#         movie_id = data.get("id")
+
+#         try:
+#             movie = Movie_review.objects.get(id=movie_id)
+#         except Movie_review.DoesNotExist:
+#             return JsonResponse({"error": "Movie not found"}, status=404)
+
+#         # Update only provided fields
+#         if "movie_name" in data:
+#             movie.movie_name = data["movie_name"]
+
+#         if "rating" in data:
+#             if data["rating"] < 1 or data["rating"] > 5:
+#                 return JsonResponse({"error": "Rating must be 1–5"}, status=400)
+#             movie.rating = data["rating"]
+
+#         if "budget" in data:
+#             if data["budget"] <= 0:
+#                 return JsonResponse({"error": "Budget must be positive"}, status=400)
+#             movie.budget = data["budget"]
+
+#         if "date" in data:
+#             movie.date = data["date"]
+
+#         movie.save()
+#         return JsonResponse({"message": "Partial update done"}, status=200)
+
+#     return JsonResponse({"error": "Method not allowed"}, status=405)
+
+
 
 
 
