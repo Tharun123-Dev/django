@@ -54,7 +54,9 @@ MIDDLEWARE = [
     'basic.middleware.sscMiddleware',
     'basic.middleware.UsernameMiddleware',
     'basic.middleware.EmailMiddleware',
-    'basic.middleware.PasswordMiddleware'
+    'basic.middleware.PasswordMiddleware',
+    'basic.middleware.MovieReviewMiddleware'
+    
 
 
 ]

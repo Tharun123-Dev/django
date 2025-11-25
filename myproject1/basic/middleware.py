@@ -196,3 +196,55 @@ class PasswordMiddleware:
                 }, status=400)
 
         return self.get_response(request)
+
+
+
+
+#movie review
+
+# class MovieReviewMiddleware:
+#     def __init__(self, get_response):
+#         self.get_response=get_response  
+
+#     def __call__(self, request):
+#             if(request.path == "movie/"):
+#               print("movie api called")
+#               incoming_data=request.POST #for form data
+#               print("incoming_data",incoming_data)
+#               if not incoming_data("rating"):
+#                   return JsonResponse({"error":"rating is required"},status=400)
+            
+#               elif not incoming_data("date"):
+#                   return JsonResponse({"error":"date is required"},status=400)
+#               elif not incoming_data("movie_name"):
+#                   return JsonResponse({"error":" movie_name is required"},status=400)
+
+#             return self.get_response(request) #get response whole
+
+class MovieReviewMiddleware:
+    def __init__(self, get_response):
+        self.get_response = get_response
+
+    def __call__(self, request):
+
+        # Apply middleware only for POST API of movie/
+        if request.path == "/movie/" and request.method == "POST":
+            incoming_data = request.POST  # form-data, x-www-form-urlencoded
+
+            # Validate fields
+            if not incoming_data.get("rating"):
+                return JsonResponse({"error": "rating is required"}, status=400)
+
+            elif not incoming_data.get("date"):
+                return JsonResponse({"error": "date is required"}, status=400)
+            
+            elif not incoming_data.get("movie_name"):
+                return JsonResponse({"error": "movie_name is required"}, status=400)
+
+            print("movie api called")
+            print("incoming_data:", incoming_data)
+
+        # Continue request normally
+        return self.get_response(request)
+
+            

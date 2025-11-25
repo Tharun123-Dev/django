@@ -29,7 +29,8 @@ from basic.views import health
 from basic.views import addStudent
 from basic.views import student_api,job1,job2
 from basic.views import signUp
-from basic.views import movie,movies_review
+from basic.views import movie,movies_review,login
+from basic.views import check,changepassword
 
 
 urlpatterns = [
@@ -50,6 +51,9 @@ urlpatterns = [
     path('job2',job2),
     path('signup/',signUp),
     path("movie/",movie),
-    path("movies/",movies_review)
+    path("movies/",movies_review),
+    path("check/",check),
+    path("login/",login),
+    path("changepassword/",changepassword)
 ]
 

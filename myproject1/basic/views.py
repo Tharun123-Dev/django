@@ -11,6 +11,7 @@ import json
 import traceback
 from basic.models import Movie
 from basic.models import Movie_review
+from django.contrib.auth.hashers import make_password,check_password
 
 
 
@@ -321,56 +322,165 @@ def job2(request):
 @csrf_exempt
 def signUp(request):
     if request.method=="POST":#getting data
-        data = json.loads(request.body) #send the data for loading data
+        data = json.loads(request.body) #send the data for loading data #whenever data getting it
         print(data)
         #insrt data into the table
         #users is the model name and import from models and set the data using by postman
         user = Users.objects.create(
                 username=data.get('username'),
                 email=data.get('email'),
-                password=data.get('password')
+                password=make_password(data.get('password')) #hashed and shown in a table
             )
 
     return JsonResponse({"status":"success"},status=200) #so its printing in terminals and set the data
 
 
-# #movie purpose
-# @csrf_exempt
-# def movie(request):
-#     if request.method=="POST":#getting data
-#         data = json.loads(request.body) #send the data for loading data
-#         # print(data)
-#         #insrt data into the table
-#         #users is the model name and import from models and set the data using by postman
-#         user = Movie.objects.create(
-#                 movie_name=data.get('movie_name'),
-#                 date=data.get('date'),
-#                 rating=data.get('rating')
-#             )
+@csrf_exempt
+def login(request):
+    if request.method == "POST":
+        data = request.POST
+        print(data)
 
-#     return JsonResponse({"status":"success"},status=200 ) #so its printing in terminals and set the data
+        username = data.get("username")
+        password = data.get("password")
+
+        if not username or not password:
+            return JsonResponse(
+                {"status": "failure", "message": "username and password required"},
+                status=400
+            )
+
+        try:
+            user = Users.objects.get(username=username)
+
+            if check_password(password, user.password):
+                return JsonResponse({"status": "successfully logged in"}, status=200)
+            else:
+                return JsonResponse(
+                    {
+                        "status": "failure",
+                        "suggestion": "password incorrect, want to reset?"
+                    },
+                    status=400
+                )
+
+        except Users.DoesNotExist:
+            return JsonResponse(
+                {"status": "failure", "message": "user not found"},
+                status=400
+            )
+
+    return JsonResponse({"error": "POST method only"}, status=405)
+
+
+
+
+# from django.http import JsonResponse, QueryDict
+# from django.views.decorators.csrf import csrf_exempt
+# from .models import Users
+
+# @csrf_exempt
+# def changepassword(request):
+#     if request.method == "PUT":
+
+#         # Parse form-data from PUT request
+#         data = QueryDict(request.body)
+#         print(data)
+
+#         ref_id = data.get("id")
+#         new_password = data.get("password")
+
+#         existing_user = Users.objects.get(id=ref_id)
+#         existing_user.password = new_password
+#         existing_user.save()
+
+#         updated_password = Users.objects.filter(id=ref_id).values().first()
+
+#         return JsonResponse(
+#             {
+#                 "status": "password changed successfully",
+#                 "updated password is": updated_password
+#             },
+#             status=200
+#         )
+
+@csrf_exempt
+def changepassword(request):
+    if request.method=="PUT":
+        data=json.loads(request.body)
+        print(data)
+        ref_id=data.get("id")
+        new_password=data.get("password")
+        existing_user=Users.objects.get(id=ref_id)
+
+        #convert to new password
+        hashed_password=make_password(new_password)
+        existing_user.password=hashed_password
+        existing_user.save()
+        updated_password=Users.objects.filter(id=ref_id).values().first()
+        return JsonResponse({"status":"password changes successfully","updated password is":updated_password},status=200)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#movie purpose
 @csrf_exempt
 def movie(request):
-    if request.method == "POST":
-        data = json.loads(request.body)
-        rating_number = int(data.get("rating"))
-        ratingg = "*" * rating_number
-        data["rating"] = ratingg
-
-        print("POST Data:", data)       
-
+    if request.method=="POST":#getting data
+        # data = json.loads(request.body) #send the data for loading data #getting the data
+        data=request.POST #when  send the data through form data
+        print(data)
+        #insrt data into the table
+        #users is the model name and import from models and set the data using by postman
         user = Movie.objects.create(
-            movie_name=data.get('movie_name'),
-            date=data.get('date'),
-            rating=rating_number     
-        )
+                movie_name=data.get('movie_name'),
+                date=data.get('date'),
+                rating=data.get('rating')
+            )
 
-        return JsonResponse({
-            "status": "success",
-            "rating": ratingg          
-        }, status=200)
+    return JsonResponse({"status":"success"},status=200 ) #so its printing in terminals and set the data
+# @csrf_exempt
+# def movie(request):
+#     if request.method == "POST":
+#         data = json.loads(request.body) #we getting the data
+#         rating_number = int(data.get("rating"))
+#         ratingg = "*" * rating_number
+#         data["rating"] = ratingg
 
-    return JsonResponse({"error": "Invalid request method"}, status=400)
+#         print("POST Data:", data)       
+
+#         user = Movie.objects.create(
+#             movie_name=data.get('movie_name'),
+#             date=data.get('date'),
+#             rating=rating_number     
+#         )
+
+#         return JsonResponse({
+#             "status": "success",
+#             "rating": ratingg          
+#         }, status=200)
+
+#     return JsonResponse({"error": "Invalid request method"}, status=400)
 
 
 
@@ -402,6 +512,14 @@ def movies_review(request):
         status=200,
         safe=False
     )
+    # if request.method == "GET":
+    #     result=tuple(Movie_review.objects.values())
+    #     print(result)
+    #     return JsonResponse(
+    #     {"status": "success", "data": result},
+    #     status=200,
+    #     safe=False
+    # )
     elif request.method=="DELETE":
            data=json.loads(request.body) #getting objects
            ref_id=data.get("id")#getting id
@@ -422,7 +540,7 @@ def movies_review(request):
          data=json.loads(request.body)
          ref_id=data.get("id")#getting email
          date=data.get("date")#getting email
-         exsiting_movie=Movie_review.objects.get(id=ref_id)#fetched the object as per the id
+         exsiting_movie=Movie_review.objects.get(id=ref_id)#fetched the object as per the id #checking
         #  print(exsiting_student)
          exsiting_movie.date=date#updating the new email
          exsiting_movie.save()#commit changes
@@ -548,6 +666,19 @@ def movies_review(request):
 
 #     return JsonResponse({"error": "Method not allowed"}, status=405)
 
+
+
+
+#hashing
+@csrf_exempt
+def check(request):
+    hashed="pbkdf2_sha256$870000$XB2KlpxRJXJ7KmhhOU5FzN$hqFxqTHJaqHHMkkgiVxpPA78q23f6hOgc9r9p1eWy+4="
+    ipdata=request.POST 
+    print(ipdata)
+    # hashed=make_password(ipdata.get("ip"))
+    x=check_password(ipdata.get("ip"),hashed)
+    print(x)
+    return JsonResponse({"status":"success","data":x},status=200)
 
 
 
