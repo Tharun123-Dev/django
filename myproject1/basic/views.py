@@ -8,10 +8,14 @@ from basic.models import Users
 
 from django.forms.models import model_to_dict
 import json
+
 import traceback
 from basic.models import Movie
 from basic.models import Movie_review
 from django.contrib.auth.hashers import make_password,check_password
+
+from django.conf import settings
+import jwt
 
 
 
@@ -354,7 +358,15 @@ def login(request):
             user = Users.objects.get(username=username)
 
             if check_password(password, user.password):
-                return JsonResponse({"status": "successfully logged in"}, status=200)
+                # token="a json web token"
+                payload = {
+                    "username": username,
+                    "email": user.email,
+                    "id": user.id
+                  }
+
+                token = jwt.encode(payload, settings.SECRET_KEY, algorithm="HS256")
+                return JsonResponse({"status": "successfully logged in","token":token}, status=200)
             else:
                 return JsonResponse(
                     {
