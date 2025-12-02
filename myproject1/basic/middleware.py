@@ -4,6 +4,8 @@ from django.http import HttpResponse
 from django.http import JsonResponse
 import re,json
 from basic.models import Users
+from django.conf import settings
+import jwt
 class basicMiddleware: #class in camel case
     def __init__(self,get_response):
         self.get_response=get_response #automatically give the response #start the server then it is run
@@ -247,4 +249,33 @@ class MovieReviewMiddleware:
         # Continue request normally
         return self.get_response(request)
 
+
+#decode the tokens
+class AuthenticateMiddleware:          
+    def __init__(self, get_response):
+        self.get_response = get_response
+
+    def __call__(self, request):
+        if request.path == "/users/":
+            token = request.headers.get("Authorization")#because of its in postman 
+            # Removed print statement to avoid printing the token
+            print(token) #this will print bearer and token
+            if not token:
+                return JsonResponse({"error":"token is missing"},status=401)
+            token_value=token.split(" ")[1] #only printing the token not bearer
+            print(token_value)
+            #decoding purpose the token
+            try:
+                decoded_data=jwt.decode(token_value,settings.SECRET_KEY,algorithms=["HS256"])
+                print(decoded_data,"decoded_data")
+                # print(request)
+                request.token_data=decoded_data
+                # print(request.token_data)
+            except jwt.ExpiredSignatureError:
+                return JsonResponse({"error":"token has expired"},status=401)
+
             
+
+
+        return self.get_response(request)
+

@@ -55,7 +55,8 @@ MIDDLEWARE = [
     'basic.middleware.UsernameMiddleware',
     'basic.middleware.EmailMiddleware',
     'basic.middleware.PasswordMiddleware',
-    'basic.middleware.MovieReviewMiddleware'
+    'basic.middleware.MovieReviewMiddleware',
+    'basic.middleware.AuthenticateMiddleware'
     
 
 

@@ -17,6 +17,9 @@ from django.contrib.auth.hashers import make_password,check_password
 from django.conf import settings
 import jwt
 
+from datetime import datetime,timedelta
+from zoneinfo import ZoneInfo
+
 
 
 # Create your views here.
@@ -356,17 +359,20 @@ def login(request):
 
         try:
             user = Users.objects.get(username=username)
+            issued_time=datetime.now(ZoneInfo("Asia/Kolkata"))
+            expired_time=issued_time+timedelta(minutes=25)
 
             if check_password(password, user.password):
                 # token="a json web token"
                 payload = {
                     "username": username,
                     "email": user.email,
-                    "id": user.id
+                    "id": user.id,
+                    "exp":expired_time
                   }
 
                 token = jwt.encode(payload, settings.SECRET_KEY, algorithm="HS256")
-                return JsonResponse({"status": "successfully logged in","token":token}, status=200)
+                return JsonResponse({"status": "successfully logged in","token":token,"issued_at":issued_time,"expired_at":int((expired_time-issued_time).total_seconds()/60)}, status=200)
             else:
                 return JsonResponse(
                     {
@@ -383,6 +389,44 @@ def login(request):
             )
 
     return JsonResponse({"error": "POST method only"}, status=405)
+
+
+
+#decoding --build an api to get all users from users table
+@csrf_exempt
+def getallusers(request):
+    if request.method=="GET":
+        users=list(Users.objects.values())
+        print(request.token_data,"token data in view")
+        print(request.token_data.get("username"),"username from token")
+        print(users,"users_list")
+        for user in users:
+            print(user["username"],"users from the users list")
+            if user["username"]==request.token_data.get("username"):
+                return JsonResponse({"status":"success","loodein_user":request.token_data,"data":users,},status=200)
+        else:
+             return JsonResponse({"error":"unauthorized access"},status=401)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
