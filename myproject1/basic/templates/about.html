@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        h1 {
+            background-color: aqua;
+            border: 3px solid red;
+            color: blueviolet;
+            display: inline-block;
+            padding: 25px;
+        }
+        a {
+            text-decoration: none;
+            background-color: red;
+            color: rgb(17, 88, 150);
+            padding: 20px; /* Adjusted padding */
+            font-size: 18px; /* Adjusted font size */
+            display: inline-block;
+            margin: 10px; /* Adjusted margin */
+            border-radius: 5px; /* Added border radius */
+            transition: background-color 0.3s; /* Added transition */
+        }
+        a:hover {
+            background-color: darkred; /* Added hover effect */
+        }
+        nav {
+            background-color: #333; /* Dark background for nav */
+            padding: 10px; /* Padding around nav */
+        }
+        ul {
+            display: flex;
+            justify-content: space-around; /* Changed to space-around */
+            list-style: none; /* Remove default list style */
+            padding: 0; /* Remove default padding */
+            margin: 0; /* Remove default margin */
+        }
+        li {
+            margin: 0; /* Remove margin from list items */
+        }
+    </style>
+</head>
+<body>
+
+    {% extends 'welcome.html' %}
+    {% block content%}
+    <h1>welcome to about page</h1>
+     {% endblock%}
+    <h1>About HTML</h1>
+    <a href="{% url 'home' %}">Home</a> <br>
+</body>
+</html>

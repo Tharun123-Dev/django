@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        nav {
+            background-color: #333;
+            padding: 0;
+        }
+
+        ul {
+            display: flex;
+            justify-content: flex-start;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        li {
+            margin: 0;
+        }
+
+        a {
+            display: block;
+            padding: 15px 20px;
+            color: white;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+
+        a:hover {
+            background-color: #555;
+        }
+
+        h1 {
+            background-color: aqua;
+            border: 3px solid red;
+            color: blueviolet;
+            display: inline-block;
+            padding: 25px;
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+
+
+    {% extends 'welcome.html' %}
+    {% block content%}
+    <h1>welcome to home page</h1>
+     {% endblock%}
+</body>
+</html>

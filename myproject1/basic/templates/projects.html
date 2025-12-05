@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+        <style>
+        ul{
+            display: flex;
+            justify-content: space-between;
+            background-color: aquamarine;
+            border: 2px solid ;
+            padding: 10px;
+            
+        }
+        li{
+            list-style: none;
+            /* font-size: 20px; */
+        }
+    </style>
+</head>
+<body>
+ 
+    {% extends 'welcome.html' %}
+    {% block content%}
+    <h1>welcome to project page</h1>
+     {% endblock%}
+    <h1>welcome to the projects</h1>
+</body>
+</html>
