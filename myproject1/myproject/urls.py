@@ -31,9 +31,16 @@ from basic.views import student_api,job1,job2
 from basic.views import signUp
 from basic.views import movie,movies_review,login
 from basic.views import services,contact,projects,check,changepassword,getallusers,home,about,welcome
+from basic.views import productById
+from cbv.views import DemoClass, PaymentView
+# from basic2.views import bs2_view
+# from django.urls import path, include
 
 
 urlpatterns = [
+    path('payment/', PaymentView.as_view()),
+    path('cbv/', DemoClass.as_view()),
+    path('productt/<int:id>/', productById),
     path('admin/', admin.site.urls),
     path('greet', sample),
     path('nani', sample1),
@@ -61,7 +68,10 @@ urlpatterns = [
     path("welcome/",welcome,name="welcome"),
     path("contact/",contact,name="contact"),
     path("services/",services,name="services"),
-    path("projects/",projects,name="projects")
+    path("projects/",projects,name="projects"),
+    # path("bs2/",bs2_view)
+
+    # path('api/', include('products.urls'))
 
 ]
 
