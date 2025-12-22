@@ -74,4 +74,3 @@ urlpatterns = [
     # path('api/', include('products.urls'))
 
 ]
-
