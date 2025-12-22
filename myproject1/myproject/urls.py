@@ -32,12 +32,17 @@ from basic.views import signUp
 from basic.views import movie,movies_review,login
 from basic.views import services,contact,projects,check,changepassword,getallusers,home,about,welcome
 from basic.views import productById
-from cbv.views import DemoClass, PaymentView
+from cbv.views import DemoClass, PaymentView,Mixin1,Mixin2,Products,Productss,getproductByCategory
 # from basic2.views import bs2_view
 # from django.urls import path, include
 
 
 urlpatterns = [
+    path('proctsbyctg/<str:ctg>',getproductByCategory.as_view()),
+    path("mixin4/",Productss.as_view()),
+    path("mixin3/",Products.as_view()),
+    path('mixin1/',Mixin1.as_view()),
+    path('mixin2/',Mixin2.as_view()),
     path('payment/', PaymentView.as_view()),
     path('cbv/', DemoClass.as_view()),
     path('productt/<int:id>/', productById),
